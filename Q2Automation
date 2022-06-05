@@ -1,0 +1,84 @@
+package SignUPTestWithoutDDF;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class signupTest 
+{
+	public static void main(String[] args) throws InterruptedException 
+	{
+		System.setProperty("webdriver.chrome.driver", "D:\\latest ChromeDriver\\chromedriver.exe");
+		WebDriver driver=new ChromeDriver();
+	
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);		
+		driver.manage().window().maximize();		
+		driver.get("https://jt-dev.azurewebsites.net/#/SignUp");
+		
+		Thread.sleep(2000);
+		//Choose Language
+		List<WebElement> ChooseLang = driver.findElements(By.xpath("(//span[@class='ui-select-match-text pull-left'])[2]"));
+		for(WebElement s1:ChooseLang)
+		{
+			s1.getText();		
+		}
+		ChooseLang.get(0).click();
+		
+		//Enter Full Name
+		driver.findElement(By.xpath("//input[@title='Enter your name here']")).sendKeys("Anand Harinarayan Pagar");
+		
+		//Enter Organization Name
+		driver.findElement(By.xpath("//input[@id='orgName']")).sendKeys("AFour Technologies");
+		
+		//Enter EmailId
+		driver.findElement(By.xpath("//input[@type='email']")).sendKeys("anandpagar3@gmail.com");
+		
+		//Select or tick Checkbox of Terms and conditions
+		driver.findElement(By.xpath("//span[@class='black-color ng-binding']")).click();
+		
+		//Click on Get Started or Submit Button
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		
+		//Verify Welcome Message on signup page after submission
+		driver.findElement(By.xpath("//div[@class='alert alert-danger alert-custom']")).getText();
+		
+		//Verify EmailID or Confirm Account through Email inbox
+		driver.get("https://mandrillapp.com/track/click/30648174/jt-dev.azurewebsites.net?p=eyJzIjoiWXFydF85dXhZb2N5YWZLYnVMNUQyd2c4M1FNIiwidiI6MSwicCI6IntcInVcIjozMDY0ODE3NCxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2p0LWRldi5henVyZXdlYnNpdGVzLm5ldFxcXC8jXFxcL2NvbmZpcm1lbWFpbFxcXC9hbmFuZHBhZ2FyM0BnbWFpbC5jb21cXFwvMWMxNjdmMTEtNmQ2OS00OGQwLWJmZTMtNGZiNTZjODg5Y2EzXFxcL2E4ZWJkNGZiLWJlMDYtNDIxZC1iMGJiLTVmYjY3YWE3OGRmYlwiLFwiaWRcIjpcIjRkZDNlMTBmNWQwNjQ5NmQ4ZTU2NDczNzRmZmQzNGYzXCIsXCJ1cmxfaWRzXCI6W1wiY2FkZDk4MzdkYmEyY2JkMzM4NzQ3M2NlOTQxMjBmODU2MmYzMzJkOFwiXX0ifQ");
+		
+		Thread.sleep(1000);
+		//Verify Email Id after switching on next page as create account
+		driver.get("https://jt-dev.azurewebsites.net/#/AccountSetup");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		
+		String Verify = driver.findElement(By.xpath("//h2[@class='ng-binding']")).getText();
+		String expName = "Welcome back, Anand";
+		if(Verify==expName)
+		{
+			System.out.println("Email Verified Successfully");
+		}
+		else
+		{
+			System.out.println("Invalid Email Id");
+		}
+		
+		Thread.sleep(1000);
+		//Enter Password
+		driver.findElement(By.xpath("(//input[@type='password'])[1]")).sendKeys("anand@12345#");
+		
+		//Confirm Password
+		driver.findElement(By.xpath("(//input[@type='password'])[2]")).sendKeys("anand@12345#");
+		
+		//Search or input country
+		driver.findElement(By.xpath("//input[@id='country']")).sendKeys("India");
+		
+		//Enter Mobile Number
+		driver.findElement(By.xpath("//input[@id='phonenumber']")).sendKeys("7066044097");
+		
+		//Click on Create Account Button
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+}
